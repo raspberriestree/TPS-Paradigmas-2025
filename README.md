@@ -1,0 +1,1 @@
+# TPS-Paradigmas-2025
