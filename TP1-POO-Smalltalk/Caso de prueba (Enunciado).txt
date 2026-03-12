@@ -1,0 +1,75 @@
+| centro paciente donante evaluador resultado| 
+"============================================" 
+"CREAR EL CENTRO DE TRASPLANTES" 
+"============================================" 
+centro := CentroTransplantes conNombre: 'Hospital Central'. 
+
+"============================================" 
+"REGISTRAR PERSONAS" 
+"============================================" 
+ 
+paciente := Persona conDni: 12345671 nombre: 'Juan' apellido: 'Pérez' 
+fechaNacimiento: (Date year: 2004 month: 5 day: 23). 
+
+donante := Persona conDni: 12345672 nombre: 'María' apellido: 'González'  
+fechaNacimiento: (Date year: 1998 month: 3 day: 20). 
+
+centro agregaPaciente: paciente fechaIngreso: (Date year: 2024 month: 10 day: 4) . 
+centro agregaDonante: donante. 
+centro asociaPaciente: paciente conDonante: donante. 
+
+"============================================" 
+"CREAR Y REGISTRAR ESTUDIOS CLÍNICOS" 
+"============================================" 
+ 
+paciente registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #A). 
+donante  registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #O). 
+
+paciente registraEstudio: (EstudioCrossmatch conResultado: #negativo) con: donante. 
+ 
+paciente registraEstudio: (EstudioSerologicoCompleto conResultado: #apto). 
+donante  registraEstudio: (EstudioSerologicoCompleto conResultado: #apto). 
+ 
+paciente registraEstudio: (EstudioTipificacionHLA conA: #(A1 A2) b: #(B7 B44) dR: #(DR1 DR4)). 
+donante  registraEstudio: (EstudioTipificacionHLA conA: #(A2 A3) b: #(B7 B8) dR: #(DR4 DR15)).
+
+paciente estatura: 1.75; peso: 74. 
+donante  estatura: 1.80; peso: 82. 
+
+"============================================" 
+"CREAR CRITERIOS Y CONFIGURAR EL EVALUADOR" 
+"============================================" 
+
+evaluador := EvaluadorCompatibilidad new. 
+
+evaluador agregaCriterioObligatorio: CriterioABO new. 
+evaluador agregaCriterioObligatorio: CriterioCrossmatch new. 
+evaluador agregaCriterioObligatorio: CriterioSerologia new. 
+
+evaluador agregaCriterioDeseable: CriterioHLA new ponderacion: 80. 
+evaluador agregaCriterioDeseable: CriterioEdad new ponderacion: 10. 
+evaluador agregaCriterioDeseable: CriterioIMC new ponderacion: 10. 
+
+centro evaluadorCompatibilidad: evaluador. 
+
+"============================================" 
+"CALCULAR COMPATIBILIDAD" 
+"============================================" 
+
+resultado := centro compatibilidad: paciente con: donante.   
+"un ResultadoCompatibilidad con porcentajeCompatibilidad = 56.8546" 
+"Mostrar el resultado" 
+Transcript show: 'Resultado de compatibilidad: '; show: resultado; cr. 
+
+"============================================" 
+"CÁLCULOS Y GUARDAR ARCHIVOS" 
+"============================================" 
+
+"Calcular todas las compatibilidades registradas" 
+centro calculaCompatibilidadesRegistrados. 
+Transcript show: 'Compatibilidades registradas calculadas.'; cr. 
+"Calcular todas las compatibilidades posibles" 
+centro calculaCompatibilidadesGeneral. 
+Transcript show: 'Compatibilidades generales calculadas.'; cr. 
+centro guardaRegistros: 'ejemploHospitalCentral'. 
+Transcript show: 'Archivos .csv generados.'; cr.  

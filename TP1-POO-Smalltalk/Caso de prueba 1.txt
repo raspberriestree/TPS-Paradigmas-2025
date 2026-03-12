@@ -1,0 +1,88 @@
+|centro paciente1 paciente2 paciente3 donante1 donante2 donante3 evaluador resultado|
+"--- INICIALIZAR CENTRO ---"
+centro := CentroTransplantes conNombre: 'Hospital de prueba'.
+"--- INICIALIZAR PERSONAS ---"
+paciente1 := Persona conDni: 44498768 nombre: 'Emanuel' apellido: 'Deniz' fechaNacimiento: (Date year: 2003 month: 3 day: 27). 
+
+paciente2 := Persona conDni: 45997231 nombre: 'Guadalupe' apellido: 'Ocampo' fechaNacimiento: (Date year: 2006 month: 6 day: 12).
+
+paciente3 := Persona conDni: 43946231 nombre: 'Mora' apellido: 'Zapata' fechaNacimiento: (Date year: 2002 month: 9 day: 8).
+
+donante1 := Persona conDni: 35349879 nombre: 'Maria' apellido: 'Kinderchendt' fechaNacimiento: (Date year: 1984 month: 1 day: 5).
+
+donante2 := Persona conDni: 48498767 nombre: 'Luciano' apellido: 'Rodriguez' fechaNacimiento: (Date year: 2015 month: 3 day: 28).
+
+donante3 := Persona conDni: 29544271 nombre: 'Ernesto' apellido: 'Zabala' fechaNacimiento: (Date year: 1979 month: 11 day: 17).
+"--- AGREGAR PERSONAS A CENTRO ---"
+centro agregaPaciente: paciente1 fechaIngreso: (Date year: 2024 month: 10 day: 3).
+centro	 agregaPaciente: paciente2 fechaIngreso: (Date year: 2025 month: 5 day: 5).
+centro	 agregaPaciente: paciente3 fechaIngreso: (Date year: 2023 month: 2 day: 21).
+
+centro agregaDonante: donante1.
+centro agregaDonante: donante2.
+centro agregaDonante: donante3.
+
+"--- ASOCIACIONES ---"
+"Queda un paciente y un donante sin asociar"
+centro asociaPaciente: paciente1  conDonante: donante1.
+centro asociaPaciente: paciente2  conDonante: donante2.
+"--- REGISTRO ESTUDIOS ---"
+paciente1 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #A).
+paciente2 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #O).
+paciente3 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #B).
+donante1 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #A).
+donante2 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #AB).
+donante3 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #B).
+
+paciente1 peso: 76; estatura: 1.87.
+paciente2 peso: 47; estatura: 1.57.
+paciente3 peso: 64; estatura: 1.69.
+donante1 peso: 71; estatura: 1.75.
+donante2 peso: 80; estatura: 1.80.
+donante3 peso: 98; estatura: 1.91.
+
+paciente1 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+paciente2 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+paciente3 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+donante1 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+donante2 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+donante3 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto).
+
+paciente1 registraEstudio: (EstudioTipificacionHLA conA: #(A1 A2) b: #(B7 B44) dR: #(DR1 DR4)).
+donante1 registraEstudio: (EstudioTipificacionHLA conA: #(A2 A3) b: #(B7 B8) dR: #(DR4 DR15)).
+
+paciente2 registraEstudio: (EstudioTipificacionHLA conA: #(A5 A3) b: #(B5 B40) dR: #(DR15 DR4)).
+donante2 registraEstudio: (EstudioTipificacionHLA conA: #(A2 A3) b: #(B7 B8) dR: #(DR4 DR12)).
+
+paciente3 registraEstudio: (EstudioTipificacionHLA conA: #(A1 A3) b: #(B7 B29) dR: #(DR10 DR12)).
+donante3 registraEstudio: (EstudioTipificacionHLA conA: #(A1 A5) b: #(B7 B8) dR: #(DR4 DR12)).
+
+donante1 registraEstudio: (EstudioAptitudGeneral conResultado: #apto).
+donante2 registraEstudio: (EstudioAptitudGeneral conResultado: #noApto).
+donante3 registraEstudio: (EstudioAptitudGeneral conResultado: #apto).
+
+paciente1 registraEstudio: (EstudioAnticuerposPRA conPorcentajes: { 'A1'->80. 'A4'->15. 'B8'->10 } ).
+"Paciente 2 no registrará este estudio"
+paciente3 registraEstudio: (EstudioAnticuerposPRA conPorcentajes: { 'A2'->40. 'A5'->35. 'B8'->15 } ).
+
+"--- EVALUADOR ---"
+evaluador := EvaluadorCompatibilidad new.
+evaluador agregaCriterioObligatorio: CriterioABO new.
+evaluador agregaCriterioObligatorio: CriterioSerologia new.
+evaluador agregaCriterioObligatorio: CriterioEstadoClinico new.
+
+evaluador agregaCriterioDeseable: CriterioIMC new ponderacion: 20.
+evaluador agregaCriterioDeseable: CriterioHLA new ponderacion: 45.
+evaluador agregaCriterioDeseable: CriterioPRA new ponderacion: 25.
+evaluador agregaCriterioDeseable: CriterioEdad new ponderacion: 10.
+
+"Minimo compatibilidad está inicializado en 55"
+centro evaluadorCompatibilidad: evaluador.
+
+resultado := centro compatibilidad: paciente1  con: donante1.
+
+centro calculaCompatibilidadesRegistrados.
+centro calculaCompatibilidadesGeneral.
+centro guardaRegistros: 'ejemploHospitalCentral'.
+^centro registro
+

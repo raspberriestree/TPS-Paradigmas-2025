@@ -1,0 +1,71 @@
+| centro paciente1 donante evaluador resultado | 
+"============================================" 
+"CREAR EL CENTRO DE TRASPLANTES" 
+"============================================" 
+centro := CentroTransplantes conNombre: 'Hospital Central'. 
+"El centro es el objeto principal que maneja pacientes, donantes y evalúa la 
+compatibilidad" 
+"============================================" 
+"REGISTRAR PERSONAS" 
+"============================================" 
+"Crear un paciente" 
+paciente1 := Persona conDni: 1234561 nombre: 'Juan' apellido: 'Pérez' 
+fechaNacimiento: (Date year: 2004 month: 5 day: 23). 
+
+"Crear un donante"  
+donante := Persona conDni: 45874965 nombre: 'María' apellido: 'González'  
+fechaNacimiento: (Date year: 2004 month: 3 day: 20). 
+"Asociar el paciente con su donante registrado (familiar/allegado)" 
+centro agregaPaciente: paciente1 fechaIngreso: (Date year: 2024 month: 10 day: 14).
+centro agregaDonante: donante. 
+centro asociaPaciente: paciente1 conDonante: donante. 
+"============================================" 
+"CREAR Y REGISTRAR ESTUDIOS CLÍNICOS" 
+"============================================" 
+"Análisis de sangre para determinar grupo sanguíneo" 
+paciente1 registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #B). 
+donante  registraEstudio: (AnalisisDeSangre conGrupoSanguineo: #O). 
+"Crossmatch: estudio específico entre paciente y donante" 
+paciente1 registraEstudio: (EstudioCrossmatch conResultado: #negativo) con: donante. 
+"Serología: detecta infecciones" 
+paciente1 registraEstudio: (EstudioSerologicoCompleto conResultado: #apto). 
+donante  registraEstudio: (EstudioSerologicoCompleto conResultado: #apto). 
+"Tipificación HLA: mide la compatibilidad" 
+paciente1 registraEstudio: (EstudioTipificacionHLA  
+conA: #(A3 A2) b: #(B7 B8) dR: #(DR15 DR4)). 
+donante  registraEstudio: (EstudioTipificacionHLA 
+conA: #(A2 A3) b: #(B7 B8) dR: #(DR4 DR15)).
+"Datos de estatura y talla: tamaño corporal" 
+paciente1 estatura: 1.80; peso: 82. 
+donante  estatura: 1.80; peso: 82. 
+"============================================" 
+"CREAR CRITERIOS Y CONFIGURAR EL EVALUADOR" 
+"============================================" 
+evaluador := EvaluadorCompatibilidad new. 
+"Agregar criterios obligatorios (si fallan, no se puede hacer el trasplante)" 
+evaluador agregaCriterioObligatorio: CriterioABO new. 
+evaluador agregaCriterioObligatorio: CriterioCrossmatch new. 
+evaluador agregaCriterioObligatorio: CriterioSerologia new. 
+"Agregar criterios deseables con sus ponderaciones (peso en %)" 
+evaluador agregaCriterioDeseable: CriterioHLA new ponderacion: 80. 
+evaluador agregaCriterioDeseable: CriterioEdad new ponderacion: 10. 
+evaluador agregaCriterioDeseable: CriterioIMC new ponderacion: 10. 
+
+"Asignar el evaluador al centro" 
+centro evaluadorCompatibilidad: evaluador. 
+"============================================" 
+"CALCULAR COMPATIBILIDAD" 
+"============================================" 
+resultado := centro compatibilidad: paciente1 con: donante.   
+
+"============================================" 
+"CÁLCULOS Y GUARDAR ARCHIVOS" 
+"============================================" 
+"Calcular todas las compatibilidades registradas" 
+centro calculaCompatibilidadesRegistrados. 
+Transcript show: 'Compatibilidades registradas calculadas.'; cr. 
+"Calcular todas las compatibilidades posibles" 
+centro calculaCompatibilidadesGeneral. 
+Transcript show: 'Compatibilidades generales calculadas.'; cr. 
+centro guardaRegistros: 'ejemploHospitalCentral'. 
+Transcript show: 'Archivos .csv generados.'; cr.

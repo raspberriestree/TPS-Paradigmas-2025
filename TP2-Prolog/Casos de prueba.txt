@@ -1,0 +1,150 @@
+Casos de prueba
+
+----- Base1 -----
+
+?- registrado(D, P).
+D = donante(25200100, "Luis Martínez"),
+P = paciente(23100200, "Juan Martínez") ;
+D = donante(33292500, "Pedro Sánchez"),
+P = paciente(37123456, "Ariel Lencina") ;
+D = donante(26854963, "María Ramos"),
+P = paciente(27561894, "Ana Ramos") ;
+D = donante(24700600, "Andrea Vera"),
+P = paciente(25450295, "Fernando Pérez") ;
+false.
+
+?- compatible(D, paciente(23100200, "Juan Martínez")).
+D = donante(33292500, "Pedro Sánchez") ;
+D = donante(26854963, "María Ramos") ;
+false.
+
+?- prioridad(donante(33292500, "Pedro Sánchez"), paciente(23100200, "Juan Martínez"), X).
+X = 93.0 ;
+false.
+
+?- lista_pacientes(10, LP). 
+LP = [paciente(23100200, "Juan Martínez"), paciente(37123456, "Ariel Lencina"), paciente(25450295, "Fernando Pérez")] ;
+false.
+
+?- trasplantes([paciente(23100200, "Juan Martínez"), paciente(37123456, "Ariel Lencina"), paciente(27561894, "Ana Ramos")], LT).
+LT = [[donante(25200100, "Luis Martínez"), paciente(27561894, "Ana Ramos")], [donante(26854963, "María Ramos"), paciente(37123456, "Ariel Lencina")], [donante(33292500, "Pedro Sánchez"), paciente(23100200, "Juan Martínez")]] ;
+false.
+
+?- prioridad_minima([[donante(25200100, "Luis Martínez"), paciente(27561894, "Ana Ramos")], [donante(26854963, "María Ramos"), paciente(37123456, "Ariel Lencina")], [donante(33292500, "Pedro Sánchez"), paciente(23100200, "Juan Martínez")]], Min). 
+Min = 56.333333333333336 ;
+false.
+
+?- cadena_trasplantes_optima([paciente(23100200, "Juan Martínez"),paciente(37123456, "Ariel Lencina"), paciente(27561894, "Ana Ramos"), paciente(25450295, "Fernando Pérez")], LT).
+LT = [[donante(25200100, "Luis Martínez"), paciente(25450295, "Fernando Pérez")], [donante(24700600, "Andrea Vera"), paciente(27561894, "Ana Ramos")], [donante(26854963, "María Ramos"), paciente(37123456, "Ariel Lencina")], [donante(33292500, "Pedro Sánchez"), paciente(23100200, "Juan Martínez")]] ;
+false.
+
+?- cadena_trasplantes_completa(10, LT).
+LT = [[donante(25200100, "Luis Martínez"), paciente(25450295, "Fernando Pérez")], [donante(24700600, "Andrea Vera"), paciente(37123456, "Ariel Lencina")], [donante(33292500, "Pedro Sánchez"), paciente(23100200, "Juan Martínez")]] ;
+false.
+
+
+
+
+
+
+----- Base2 -----
+
+?- registrado(D, P).
+D = donante(20000100, "Raúl Gómez"),
+P = paciente(10000100, "Carlos Gómez") ;
+D = donante(20000200, "Marina Fernández"),
+P = paciente(10000200, "Lucía Fernández") ;
+D = donante(20000300, "Javier Ramírez"),
+P = paciente(10000300, "Tomás Ramírez") ;
+D = donante(20000400, "Elena Acosta"),
+P = paciente(10000400, "Sofía Acosta") ;
+D = donante(20000500, "Pablo Benítez"),
+P = paciente(10000500, "Mateo Benítez") ;
+D = donante(20000600, "Clara Domínguez"),
+P = paciente(10000600, "Valentina Domínguez") ;
+false.
+
+?- compatible(donante(20000100, "Raúl Gómez"), P).
+P = paciente(10000200, "Lucía Fernández") ;
+P = paciente(10000400, "Sofía Acosta") ;
+false.
+
+?- prioridad(donante(20000100, "Raúl Gómez"), paciente(10000200, "Lucía Fernández"), P).
+P = 77.33333333333333 ;
+false.
+
+?- lista_pacientes(10, LP).
+LP = [paciente(10000100, "Carlos Gómez"), paciente(10000200, "Lucía Fernández"), paciente(10000400, "Sofía Acosta"), paciente(10000600, "Valentina Domínguez")] ;
+false.
+
+?- trasplantes([paciente(10000100, "Carlos Gómez"), paciente(10000200, "Lucía Fernández"), paciente(10000300, "Tomás Ramírez"), paciente(10000400, "Sofía Acosta"), paciente(10000500, "Mateo Benítez"), paciente(10000600, "Valentina Domínguez")], LT).
+LT = [[donante(20000100, "Raúl Gómez"), paciente(10000200, "Lucía Fernández")], [donante(20000200, "Marina Fernández"), paciente(10000300, "Tomás Ramírez")], [donante(20000300, "Javier Ramírez"), paciente(10000400, "Sofía Acosta")], [donante(20000400, "Elena Acosta"), paciente(10000500, "Mateo Benítez")], [donante(20000500, "Pablo Benítez"), paciente(10000600, "Valentina Domínguez")], [donante(20000600, "Clara Domínguez"), paciente(10000100, "Carlos Gómez")]] ;
+false.
+
+?- prioridad_minima([[donante(20000100, "Raúl Gómez"), paciente(10000300, "Tomás Ramírez")], [donante(20000300, "Javier Ramírez"), paciente(10000100, "Carlos Gómez")], [donante(20000200, "Marina Fernández"), paciente(10000600, "Valentina Domínguez")]], Min).
+Min = 83.0 ;
+false.
+
+?- cadena_trasplantes_optima([paciente(10000100, "Carlos Gómez"), paciente(10000200, "Lucía Fernández"), paciente(10000300, "Tomás Ramírez"), paciente(10000400, "Sofía Acosta"), paciente(10000500, "Mateo Benítez"), paciente(10000600, "Valentina Domínguez")], LT).
+LT = [[donante(20000100, "Raúl Gómez"), paciente(10000200, "Lucía Fernández")], [donante(20000200, "Marina Fernández"), paciente(10000300, "Tomás Ramírez")], [donante(20000300, "Javier Ramírez"), paciente(10000400, "Sofía Acosta")], [donante(20000400, "Elena Acosta"), paciente(10000500, "Mateo Benítez")], [donante(20000500, "Pablo Benítez"), paciente(10000600, "Valentina Domínguez")], [donante(20000600, "Clara Domínguez"), paciente(10000100, "Carlos Gómez")]] ;
+false.
+
+?- cadena_trasplantes_completa(5, LT).
+LT = [[donante(20000100, "Raúl Gómez"), paciente(10000200, "Lucía Fernández")], [donante(20000200, "Marina Fernández"), paciente(10000300, "Tomás Ramírez")], [donante(20000300, "Javier Ramírez"), paciente(10000400, "Sofía Acosta")], [donante(20000400, "Elena Acosta"), paciente(10000500, "Mateo Benítez")], [donante(20000500, "Pablo Benítez"), paciente(10000600, "Valentina Domínguez")], [donante(20000600, "Clara Domínguez"), paciente(10000100, "Carlos Gómez")]] ;
+false.
+
+
+
+
+
+----- Base 3 -----
+
+?- registrado(Donante, Paciente).
+Donante = donante(50000100, "Hugo López"),
+Paciente = paciente(40000100, "Julia López") ;
+Donante = donante(50000200, "Nadia Suárez"),
+Paciente = paciente(40000200, "Martín Suárez") ;
+Donante = donante(50000300, "Gonzalo Pereyra"),
+Paciente = paciente(40000300, "Carla Pereyra") ;
+Donante = donante(50000400, "Rocío Morales"),
+Paciente = paciente(40000400, "Diego Morales") ;
+Donante = donante(50000500, "Andrés Navarro"),
+Paciente = paciente(40000500, "Santiago Navarro") ;
+Donante = donante(50000600, "Patricia Silva"),
+Paciente = paciente(40000600, "Luz Silva") ;
+Donante = donante(50000700, "Ignacio Torres"),
+Paciente = paciente(40000700, "Emilia Torres") ;
+Donante = donante(50000800, "Camila Molina"),
+Paciente = paciente(40000800, "Franco Molina") ;
+false.
+
+?- compatible(donante(50000500, "Andrés Navarro"), Paciente).
+Paciente = paciente(40000600, "Luz Silva") ;
+Paciente = paciente(40000200, "Martín Suárez") ;
+false.
+
+?- prioridad(donante(50000500, "Andrés Navarro"), paciente(40000600, "Luz Silva"), P).
+P = 83.66666666666667 ;
+false.
+
+?- prioridad_minima([[donante(50000100, "Hugo López"), paciente(40000200, "Martín Suárez")],[donante(50000200, "Nadia Suárez"), paciente(40000300, "Carla Pereyra")],[donante(50000300, "Gonzalo Pereyra"), paciente(40000400, "Diego Morales")]], Min).
+Min = 76.5 ;
+false.
+
+?- lista_pacientes(15, L).
+L = [paciente(40000200, "Martín Suárez"), paciente(40000500, "Santiago Navarro"), paciente(40000600, "Luz Silva"), paciente(40000800, "Franco Molina")] ;
+false.
+
+?- trasplantes([paciente(40000100, "Julia López"), paciente(40000200, "Martín Suárez"), paciente(40000300, "Carla Pereyra"), paciente(40000400, "Diego Morales"), paciente(40000500, "Santiago Navarro"), paciente(40000600, "Luz Silva"), paciente(40000700, "Emilia Torres"), paciente(40000800, "Franco Molina")], LT).
+LT = [[donante(50000100, "Hugo López"), paciente(40000200, "Martín Suárez")], [donante(50000200, "Nadia Suárez"), paciente(40000300, "Carla Pereyra")], [donante(50000300, "Gonzalo Pereyra"), paciente(40000400, "Diego Morales")], [donante(50000400, "Rocío Morales"), paciente(40000500, "Santiago Navarro")], [donante(50000500, "Andrés Navarro"), paciente(40000600, "Luz Silva")], [donante(50000600, "Patricia Silva"), paciente(40000700, "Emilia Torres")], [donante(50000700, "Ignacio Torres"), paciente(..., ...)], [donante(..., ...)|...]] ;
+LT = [[donante(50000100, "Hugo López"), paciente(40000400, "Diego Morales")], [donante(50000400, "Rocío Morales"), paciente(40000500, "Santiago Navarro")], [donante(50000500, "Andrés Navarro"), paciente(40000200, "Martín Suárez")], [donante(50000200, "Nadia Suárez"), paciente(40000300, "Carla Pereyra")], [donante(50000300, "Gonzalo Pereyra"), paciente(40000600, "Luz Silva")], [donante(50000600, "Patricia Silva"), paciente(40000700, "Emilia Torres")], [donante(50000700, "Ignacio Torres"), paciente(..., ...)], [donante(..., ...)|...]] ;
+false.
+
+?-  cadena_trasplantes_completa(5, Cadena).
+Cadena = [[donante(50000100, "Hugo López"), paciente(40000200, "Martín Suárez")], [donante(50000200, "Nadia Suárez"), paciente(40000300, "Carla Pereyra")], [donante(50000300, "Gonzalo Pereyra"), paciente(40000400, "Diego Morales")], [donante(50000400, "Rocío Morales"), paciente(40000500, "Santiago Navarro")], [donante(50000500, "Andrés Navarro"), paciente(40000600, "Luz Silva")], [donante(50000600, "Patricia Silva"), paciente(40000700, "Emilia Torres")], [donante(50000700, "Ignacio Torres"), paciente(..., ...)], [donante(..., ...)|...]] ;
+false.
+
+?- cadena_trasplantes_optima([paciente(40000100, "Julia López"), paciente(40000200, "Martín Suárez"), paciente(40000300, "Carla Pereyra"), paciente(40000400, "Diego Morales"), paciente(40000500, "Santiago Navarro"), paciente(40000600, "Luz Silva"), paciente(40000700, "Emilia Torres"), paciente(40000800, "Franco Molina")],Optima).
+Optima = [[donante(50000100, "Hugo López"), paciente(40000200, "Martín Suárez")], [donante(50000200, "Nadia Suárez"), paciente(40000300, "Carla Pereyra")], [donante(50000300, "Gonzalo Pereyra"), paciente(40000400, "Diego Morales")], [donante(50000400, "Rocío Morales"), paciente(40000500, "Santiago Navarro")], [donante(50000500, "Andrés Navarro"), paciente(40000600, "Luz Silva")], [donante(50000600, "Patricia Silva"), paciente(40000700, "Emilia Torres")], [donante(50000700, "Ignacio Torres"), paciente(..., ...)], [donante(..., ...)|...]] ;
+false.
+
